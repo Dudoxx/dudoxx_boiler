@@ -44,7 +44,11 @@ class DudoxxAPI:
         self.base_url = base_url.rstrip('/')
         self.session = requests.Session()
 
-        # Authenticate and get session info
+        # Get session info first
+        session_info = self.session.get(f"{self.base_url}/web/session/get_session_info")
+        session_info.raise_for_status()
+
+        # Authenticate
         auth_url = f"{self.base_url}/web/session/authenticate"
         auth_data = {
             "jsonrpc": "2.0",
@@ -52,24 +56,21 @@ class DudoxxAPI:
                 "db": db,
                 "login": username,
                 "password": password,
-                "context": {}
+                "base_location": self.base_url
             }
         }
+
+        # Add CSRF token if available
+        csrf_token = session_info.cookies.get('csrf_token')
+        if csrf_token:
+            self.session.headers.update({'X-CSRFToken': csrf_token})
+
         response = self.session.post(auth_url, json=auth_data)
         response.raise_for_status()
 
         result = response.json()
         if not result.get('result'):
             raise Exception("Authentication failed")
-
-        # Get session info
-        session_info = self.session.get(f"{self.base_url}/web/session/get_session_info")
-        session_info.raise_for_status()
-
-        # Set CSRF token if available
-        csrf_token = session_info.json().get('result', {}).get('csrf_token')
-        if csrf_token:
-            self.session.headers.update({'X-CSRFToken': csrf_token})
 
     def _make_request(self, method, endpoint, **kwargs):
         """Make HTTP request to API endpoint.
@@ -84,21 +85,23 @@ class DudoxxAPI:
         """
         url = f"{self.base_url}{endpoint}"
 
-        # Add session cookie and CSRF token to headers
-        headers = kwargs.pop('headers', {})
-        headers.update({
+        # Prepare headers
+        headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-        })
+        }
 
-        # Handle file uploads differently
+        # Add CSRF token from cookies if available
+        csrf_token = self.session.cookies.get('csrf_token')
+        if csrf_token:
+            headers['X-CSRFToken'] = csrf_token
+
+        # Handle file uploads
         if 'files' in kwargs:
             headers.pop('Content-Type', None)
-        else:
-            # Convert data to JSON if it's not a file upload
-            data = kwargs.pop('data', None)
-            if data:
-                kwargs['json'] = data
+        elif 'data' in kwargs:
+            # Convert data to JSON for non-file requests
+            kwargs['json'] = kwargs.pop('data')
 
         kwargs['headers'] = headers
         response = self.session.request(method, url, **kwargs)
