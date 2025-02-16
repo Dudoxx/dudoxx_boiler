@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_dudoxx_boiler_client_search" model="ir.ui.view">
+        <field name="name">dudoxx_boiler.client.search</field>
+        <field name="model">dudoxx_boiler.client</field>
+        <field name="arch" type="xml">
+            <search string="Search Clients">
+                <!-- Basic Search -->
+                <field name="name"
+                       filter_domain="['|', '|', '|',
+                                     ('name', 'ilike', self),
+                                     ('email', 'ilike', self),
+                                     ('phone', 'ilike', self),
+                                     ('reference', 'ilike', self)]"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="company_name"/>
+                <field name="tag_ids"/>
+
+                <separator/>
+
+                <!-- Status Filters -->
+                <filter string="Draft" name="draft"
+                        domain="[('status', '=', 'draft')]"/>
+                <filter string="Active" name="active_status"
+                        domain="[('status', '=', 'active')]"/>
+                <filter string="Suspended" name="suspended"
+                        domain="[('status', '=', 'suspended')]"/>
+                <filter string="Closed" name="closed"
+                        domain="[('status', '=', 'closed')]"/>
+
+                <separator/>
+
+                <!-- Type Filters -->
+                <filter string="Individual" name="individual"
+                        domain="[('client_type', '=', 'individual')]"/>
+                <filter string="Company" name="company"
+                        domain="[('client_type', '=', 'company')]"/>
+                <filter string="Government" name="government"
+                        domain="[('client_type', '=', 'government')]"/>
+                <filter string="Non Profit" name="non_profit"
+                        domain="[('client_type', '=', 'non_profit')]"/>
+
+                <separator/>
+
+                <!-- Special Filters -->
+                <filter string="High Priority" name="high_priority"
+                        domain="[('priority', 'in', ['2', '3'])]"/>
+                <filter string="Has Documents" name="has_documents"
+                        domain="[('document_ids', '!=', False)]"/>
+                <filter string="No Documents" name="no_documents"
+                        domain="[('document_ids', '=', False)]"/>
+                <filter string="Archived" name="inactive"
+                        domain="[('active', '=', False)]"/>
+
+                <!-- Group By -->
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_by_status"
+                            context="{'group_by': 'status'}"/>
+                    <filter string="Type" name="group_by_type"
+                            context="{'group_by': 'client_type'}"/>
+                    <filter string="Priority" name="group_by_priority"
+                            context="{'group_by': 'priority'}"/>
+                    <filter string="Country" name="group_by_country"
+                            context="{'group_by': 'country_id'}"/>
+                    <filter string="Industry" name="group_by_industry"
+                            context="{'group_by': 'industry'}"/>
+                    <separator/>
+                    <filter string="Creation Date" name="group_by_create_date"
+                            context="{'group_by': 'create_date:month'}"/>
+                    <filter string="Last Contact" name="group_by_last_contact"
+                            context="{'group_by': 'last_contact_date:month'}"/>
+                </group>
+
+                <!-- Default Filters -->
+                <searchpanel>
+                    <field name="client_type" icon="fa-users" enable_counters="1"/>
+                    <field name="status" icon="fa-flag" enable_counters="1"/>
+                    <field name="tag_ids" icon="fa-tag" enable_counters="1"
+                           select="multi"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+</odoo>

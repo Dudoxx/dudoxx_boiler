@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_dudoxx_boiler_client_tree" model="ir.ui.view">
+        <field name="name">dudoxx_boiler.client.tree</field>
+        <field name="model">dudoxx_boiler.client</field>
+        <field name="arch" type="xml">
+            <tree string="Clients"
+                  decoration-info="status == 'draft'"
+                  decoration-success="status == 'active'"
+                  decoration-warning="status == 'suspended'"
+                  decoration-danger="status == 'closed'"
+                  sample="1">
+                <!-- Key Identifier -->
+                <field name="reference"/>
+                <field name="name"/>
+
+                <!-- Main Information -->
+                <field name="client_type"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="company_name"/>
+
+                <!-- Status and Metrics -->
+                <field name="status"/>
+                <field name="priority" widget="priority"/>
+                <field name="document_count"/>
+                <field name="last_contact_date"/>
+
+                <!-- Action Buttons -->
+                <button name="toggle_active" type="object"
+                        string="Archive" icon="fa-archive"
+                        class="btn btn-link text-warning"
+                        attrs="{'invisible': [('active', '=', False)]}"/>
+                <button name="toggle_active" type="object"
+                        string="Restore" icon="fa-undo"
+                        class="btn btn-link text-success"
+                        attrs="{'invisible': [('active', '=', True)]}"/>
+
+                <!-- Hidden Fields -->
+                <field name="active" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

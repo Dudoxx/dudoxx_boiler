@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_dudoxx_boiler_client_document_kanban" model="ir.ui.view">
+        <field name="name">dudoxx_boiler.client_document.kanban</field>
+        <field name="model">dudoxx_boiler.client_document</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" sample="1" default_order="create_date desc">
+                <!-- Required Fields -->
+                <field name="id"/>
+                <field name="name"/>
+                <field name="reference"/>
+                <field name="document_type"/>
+                <field name="category"/>
+                <field name="state"/>
+                <field name="priority"/>
+                <field name="icon"/>
+                <field name="file"/>
+                <field name="file_type"/>
+                <field name="date"/>
+                <field name="expiry_date"/>
+                <field name="days_to_expire"/>
+                <field name="access_level"/>
+                <field name="is_confidential"/>
+                <field name="client_ids"/>
+                <field name="active"/>
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click card m-3 border shadow-sm position-relative card-border"
+                             t-att-data-state="record.state.raw_value">
+                            <!-- Status Badge -->
+                            <div class="position-absolute top-0 end-0 m-2">
+                                <span t-attf-class="badge rounded-pill text-white px-3 py-2 #{record.state.raw_value == 'approved' ? 'bg-success' : record.state.raw_value == 'draft' ? 'bg-info' : record.state.raw_value == 'submitted' ? 'bg-warning' : 'bg-danger'}">
+                                    <field name="state"/>
+                                </span>
+                            </div>
+
+                            <!-- Card Header -->
+                            <div class="card-header bg-white border-bottom pt-3">
+                                <div class="d-flex align-items-center">
+                                    <!-- Document Icon -->
+                                    <div class="me-3">
+                                        <div class="document-icon-container">
+                                            <field name="icon" widget="image" class="document-icon"/>
+                                        </div>
+                                    </div>
+                                    <!-- Document Info -->
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h5 class="card-title mb-1 text-primary fw-bold">
+                                                <field name="name"/>
+                                            </h5>
+                                            <field name="priority" widget="priority"/>
+                                        </div>
+                                        <p class="text-muted small mb-0">
+                                            <field name="reference"/>
+                                        </p>
+                                        <div class="mt-1">
+                                            <span class="badge bg-secondary me-1">
+                                                <field name="document_type"/>
+                                            </span>
+                                            <span class="badge bg-info">
+                                                <field name="category"/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card Body -->
+                            <div class="card-body pt-3">
+                                <div class="row g-2">
+                                    <!-- File Info -->
+                                    <div class="col-12">
+                                        <p class="mb-1" t-if="record.file.raw_value">
+                                            <i class="fa fa-file text-muted me-2" title="File Type"/>
+                                            <field name="file_type"/>
+                                        </p>
+                                        <p class="mb-1">
+                                            <i class="fa fa-calendar text-muted me-2" title="Date"/>
+                                            <field name="date"/>
+                                        </p>
+                                        <t t-if="record.expiry_date.raw_value">
+                                            <p class="mb-1">
+                                                <i class="fa fa-clock-o text-muted me-2" title="Expiry"/>
+                                                <field name="days_to_expire"/> days to expire
+                                            </p>
+                                        </t>
+                                    </div>
+                                    <!-- Access Info -->
+                                    <div class="col-12 mt-2">
+                                        <span t-attf-class="badge me-1 #{record.is_confidential.raw_value ? 'bg-danger' : 'bg-success'}">
+                                            <i t-if="record.is_confidential.raw_value" class="fa fa-lock me-1"/>
+                                            <i t-else="" class="fa fa-unlock me-1"/>
+                                            <field name="access_level"/>
+                                        </span>
+                                        <field name="client_ids" widget="many2many_tags"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card Footer -->
+                            <div class="card-footer bg-white border-top py-2">
+                                <!-- State Management Buttons -->
+                                <div class="d-flex flex-wrap gap-2 mb-2">
+                                    <!-- Draft -> Submit -->
+                                    <button name="action_submit" type="object"
+                                            class="btn btn-primary btn-sm"
+                                            attrs="{'invisible': [('state', '!=', 'draft')]}">
+                                        <i class="fa fa-paper-plane me-1"/>Submit
+                                    </button>
+
+                                    <!-- Submitted -> Approve/Reject -->
+                                    <button name="action_approve" type="object"
+                                            class="btn btn-success btn-sm"
+                                            attrs="{'invisible': [('state', '!=', 'submitted')]}">
+                                        <i class="fa fa-check me-1"/>Approve
+                                    </button>
+                                    <button name="action_reject" type="object"
+                                            class="btn btn-danger btn-sm"
+                                            attrs="{'invisible': [('state', '!=', 'submitted')]}">
+                                        <i class="fa fa-times me-1"/>Reject
+                                    </button>
+
+                                    <!-- Submitted/Rejected -> Reset -->
+                                    <button name="action_reset_to_draft" type="object"
+                                            class="btn btn-secondary btn-sm"
+                                            attrs="{'invisible': [('state', 'not in', ['submitted', 'rejected'])]}">
+                                        <i class="fa fa-refresh me-1"/>Reset
+                                    </button>
+
+                                    <!-- Approved -> Expire -->
+                                    <button name="action_expire" type="object"
+                                            class="btn btn-warning btn-sm"
+                                            attrs="{'invisible': [('state', '!=', 'approved')]}">
+                                        <i class="fa fa-clock-o me-1"/>Expire
+                                    </button>
+
+                                    <!-- Expired -> Reactivate -->
+                                    <button name="action_reactivate" type="object"
+                                            class="btn btn-info btn-sm"
+                                            attrs="{'invisible': [('state', '!=', 'expired')]}">
+                                        <i class="fa fa-history me-1"/>Reactivate
+                                    </button>
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <!-- Archive/Restore Button -->
+                                    <button name="toggle_active" type="object"
+                                            t-attf-class="btn btn-sm #{record.active.raw_value ? 'btn-warning' : 'btn-success'}"
+                                            attrs="{'invisible': [('id', '=', False)]}">
+                                        <t t-if="record.active.raw_value">
+                                            <i class="fa fa-archive me-1"/>Archive
+                                        </t>
+                                        <t t-else="">
+                                            <i class="fa fa-undo me-1"/>Restore
+                                        </t>
+                                    </button>
+                                    <!-- Download Button -->
+                                    <button name="action_download" type="object"
+                                            class="btn btn-outline-primary btn-sm"
+                                            attrs="{'invisible': [('file', '=', False)]}">
+                                        <i class="fa fa-download me-1"/>Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Client Sequence -->
+        <record id="seq_dudoxx_boiler_client" model="ir.sequence">
+            <field name="name">Client Sequence</field>
+            <field name="code">dudoxx_boiler.client</field>
+            <field name="prefix">CLI</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Document Sequence -->
+        <record id="seq_dudoxx_boiler_client_document" model="ir.sequence">
+            <field name="name">Document Sequence</field>
+            <field name="code">dudoxx_boiler.client_document</field>
+            <field name="prefix">DOC</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

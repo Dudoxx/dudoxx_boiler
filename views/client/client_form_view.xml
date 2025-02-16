@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_dudoxx_boiler_client_form" model="ir.ui.view">
+        <field name="name">dudoxx_boiler.client.form</field>
+        <field name="model">dudoxx_boiler.client</field>
+        <field name="arch" type="xml">
+            <form string="Client">
+                <field name="state" invisible="1"/>
+                <header>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group" role="group">
+                            <button name="toggle_active" type="object"
+                                    string="Archive" attrs="{'invisible': [('active', '=', False)]}"
+                                    class="btn btn-primary"/>
+                            <button name="toggle_active" type="object"
+                                    string="Unarchive" attrs="{'invisible': [('active', '=', True)]}"
+                                    class="btn btn-primary"/>
+                        </div>
+                    </div>
+                </header>
+                <sheet>
+                    <!-- Button Box -->
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_documents" type="object"
+                                class="oe_stat_button" icon="fa-file-text-o">
+                            <field name="document_count" widget="statinfo" string="Documents"/>
+                        </button>
+                    </div>
+
+                    <!-- Title -->
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reference" readonly="1" class="mb-2"/>
+                        </h1>
+                        <h2>
+                            <field name="name" placeholder="Client Name" class="mb-0"/>
+                        </h2>
+                    </div>
+
+                    <!-- Content Cards -->
+                    <div class="row mt-4">
+                        <!-- Left Column -->
+                        <div class="col-md-6">
+                            <!-- Basic Info Card -->
+                            <div class="card mb-3 card-border">
+                                <button name="action_toggle_section" type="object"
+                                        class="card-header bg-light d-flex justify-content-between align-items-center w-100 border-0 cursor-pointer"
+                                        context="{'section': 'basic_info'}">
+                                    <h5 class="mb-0">Basic Information</h5>
+                                    <i class="fa fa-chevron-down" title="Toggle Section"/>
+                                </button>
+                                <div class="card-body" attrs="{'invisible': [('show_basic_info', '=', False)]}">
+                                    <field name="show_basic_info" invisible="1"/>
+                                    <group>
+                                        <field name="client_type" class="mb-2"/>
+                                        <field name="status" class="mb-2"/>
+                                        <field name="priority" widget="priority" class="mb-2"/>
+                                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" class="mb-2"/>
+                                    </group>
+                                </div>
+                            </div>
+
+                            <!-- Contact Info Card -->
+                            <div class="card mb-3 card-border">
+                                <button name="action_toggle_section" type="object"
+                                        class="card-header bg-light d-flex justify-content-between align-items-center w-100 border-0 cursor-pointer"
+                                        context="{'section': 'contact_info'}">
+                                    <h5 class="mb-0">Contact Information</h5>
+                                    <i class="fa fa-chevron-down" title="Toggle Section"/>
+                                </button>
+                                <div class="card-body" attrs="{'invisible': [('show_contact_info', '=', False)]}">
+                                    <field name="show_contact_info" invisible="1"/>
+                                    <group>
+                                        <field name="email" class="mb-2"/>
+                                        <field name="phone" class="mb-2"/>
+                                        <field name="mobile" class="mb-2"/>
+                                        <field name="website" class="mb-2"/>
+                                        <field name="language_id" class="mb-2"/>
+                                    </group>
+                                </div>
+                            </div>
+
+                            <!-- Address Card -->
+                            <div class="card mb-3 card-border">
+                                <button name="action_toggle_section" type="object"
+                                        class="card-header bg-light d-flex justify-content-between align-items-center w-100 border-0 cursor-pointer"
+                                        context="{'section': 'address'}">
+                                    <h5 class="mb-0">Address</h5>
+                                    <i class="fa fa-chevron-down" title="Toggle Section"/>
+                                </button>
+                                <div class="card-body" attrs="{'invisible': [('show_address', '=', False)]}">
+                                    <field name="show_address" invisible="1"/>
+                                    <group>
+                                        <field name="street" class="mb-2"/>
+                                        <field name="street2" class="mb-2"/>
+                                        <field name="city" class="mb-2"/>
+                                        <field name="state" class="mb-2"/>
+                                        <field name="zip" class="mb-2"/>
+                                        <field name="country_id" class="mb-2"/>
+                                    </group>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="col-md-6">
+                            <!-- Personal Info Card -->
+                            <div class="card mb-3 card-border">
+                                <button name="action_toggle_section" type="object"
+                                        class="card-header bg-light d-flex justify-content-between align-items-center w-100 border-0 cursor-pointer"
+                                        context="{'section': 'personal_info'}">
+                                    <h5 class="mb-0">Personal Information</h5>
+                                    <i class="fa fa-chevron-down" title="Toggle Section"/>
+                                </button>
+                                <div class="card-body" attrs="{'invisible': [('show_personal_info', '=', False)]}">
+                                    <field name="show_personal_info" invisible="1"/>
+                                    <div class="text-center mb-3">
+                                        <div class="client-avatar-container">
+                                            <field name="image" widget="image" class="client-avatar"/>
+                                        </div>
+                                    </div>
+                                    <group>
+                                        <field name="birthdate" class="mb-2"/>
+                                        <field name="age" class="mb-2"/>
+                                        <field name="gender" class="mb-2"/>
+                                    </group>
+                                </div>
+                            </div>
+
+                            <!-- Business Info Card -->
+                            <div class="card mb-3 card-border">
+                                <button name="action_toggle_section" type="object"
+                                        class="card-header bg-light d-flex justify-content-between align-items-center w-100 border-0 cursor-pointer"
+                                        context="{'section': 'business_info'}">
+                                    <h5 class="mb-0">Business Information</h5>
+                                    <i class="fa fa-chevron-down" title="Toggle Section"/>
+                                </button>
+                                <div class="card-body" attrs="{'invisible': [('show_business_info', '=', False)]}">
+                                    <field name="show_business_info" invisible="1"/>
+                                    <group>
+                                        <field name="company_name" class="mb-2"/>
+                                        <field name="job_position" class="mb-2"/>
+                                        <field name="industry" class="mb-2"/>
+                                    </group>
+                                </div>
+                            </div>
+
+                            <!-- Financial Info Card -->
+                            <div class="card mb-3 card-border">
+                                <button name="action_toggle_section" type="object"
+                                        class="card-header bg-light d-flex justify-content-between align-items-center w-100 border-0 cursor-pointer"
+                                        context="{'section': 'financial_info'}">
+                                    <h5 class="mb-0">Financial Information</h5>
+                                    <i class="fa fa-chevron-down" title="Toggle Section"/>
+                                </button>
+                                <div class="card-body" attrs="{'invisible': [('show_financial_info', '=', False)]}">
+                                    <field name="show_financial_info" invisible="1"/>
+                                    <group>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="credit_limit" class="mb-2"/>
+                                        <field name="balance" class="mb-2"/>
+                                    </group>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Documents Section -->
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <div class="card card-border">
+                                <button name="action_toggle_section" type="object"
+                                        class="card-header bg-light d-flex justify-content-between align-items-center w-100 border-0 cursor-pointer"
+                                        context="{'section': 'documents'}">
+                                    <h5 class="mb-0">Documents</h5>
+                                    <i class="fa fa-chevron-down" title="Toggle Section"/>
+                                </button>
+                                <div class="card-body p-0" attrs="{'invisible': [('show_documents', '=', False)]}">
+                                    <field name="show_documents" invisible="1"/>
+                                    <field name="document_ids">
+                                        <tree>
+                                            <field name="reference"/>
+                                            <field name="name"/>
+                                            <field name="document_type"/>
+                                            <field name="category"/>
+                                            <field name="date"/>
+                                            <field name="state" decoration-success="state == 'approved'"
+                                                   decoration-info="state == 'draft'"
+                                                   decoration-warning="state == 'submitted'"
+                                                   decoration-danger="state in ('rejected', 'expired')"/>
+                                        </tree>
+                                    </field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notes Section -->
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="card card-border">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">Notes</h5>
+                                </div>
+                                <div class="card-body">
+                                    <field name="notes" placeholder="Enter notes here..."/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hidden Fields -->
+                    <field name="active" invisible="1"/>
+                    <field name="last_contact_date" invisible="1"/>
+                </sheet>
+
+                <!-- Chatter -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+</odoo>

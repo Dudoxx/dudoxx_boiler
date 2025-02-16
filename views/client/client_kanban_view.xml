@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_dudoxx_boiler_client_kanban" model="ir.ui.view">
+        <field name="name">dudoxx_boiler.client.kanban</field>
+        <field name="model">dudoxx_boiler.client</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" sample="1" default_order="create_date desc">
+                <!-- Required Fields -->
+                <field name="id"/>
+                <field name="name"/>
+                <field name="reference"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="status"/>
+                <field name="client_type"/>
+                <field name="priority"/>
+                <field name="image"/>
+                <field name="document_count"/>
+                <field name="company_name"/>
+                <field name="tag_ids"/>
+                <field name="active"/>
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click card m-3 border shadow-sm position-relative card-border"
+                             t-att-data-state="record.status.raw_value">
+                            <!-- Status Badge -->
+                            <div class="position-absolute top-0 end-0 m-2">
+                                <span t-attf-class="badge rounded-pill text-white px-3 py-2 #{record.status.raw_value == 'active' ? 'bg-success' : record.status.raw_value == 'draft' ? 'bg-info' : record.status.raw_value == 'suspended' ? 'bg-warning' : 'bg-danger'}">
+                                    <field name="status"/>
+                                </span>
+                            </div>
+
+                            <!-- Card Header -->
+                            <div class="card-header bg-white border-bottom pt-3">
+                                <div class="d-flex align-items-center">
+                                    <!-- Client Image -->
+                                    <div class="me-3">
+                                        <field name="image" widget="image" class="client-avatar"/>
+                                    </div>
+                                    <!-- Client Info -->
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h5 class="card-title mb-1 text-primary fw-bold">
+                                                <field name="name"/>
+                                            </h5>
+                                            <field name="priority" widget="priority"/>
+                                        </div>
+                                        <p class="text-muted small mb-0">
+                                            <field name="reference"/>
+                                        </p>
+                                        <div class="mt-1">
+                                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card Body -->
+                            <div class="card-body pt-3">
+                                <div class="row g-2">
+                                    <!-- Contact Info -->
+                                    <div class="col-12">
+                                        <p class="mb-1">
+                                            <i class="fa fa-envelope text-muted me-2" title="Email"/>
+                                            <field name="email"/>
+                                        </p>
+                                        <p class="mb-1">
+                                            <i class="fa fa-phone text-muted me-2" title="Phone"/>
+                                            <field name="phone"/>
+                                        </p>
+                                        <t t-if="record.company_name.raw_value">
+                                            <p class="mb-1">
+                                                <i class="fa fa-building text-muted me-2" title="Company"/>
+                                                <field name="company_name"/>
+                                            </p>
+                                        </t>
+                                    </div>
+                                    <!-- Document Count -->
+                                    <div class="col-12 mt-2">
+                                        <span class="badge bg-info">
+                                            <i class="fa fa-file-text-o me-1" title="Documents"/>
+                                            <field name="document_count"/> Documents
+                                        </span>
+                                        <span class="badge bg-secondary ms-2">
+                                            <field name="client_type"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card Footer -->
+                            <div class="card-footer bg-white border-top py-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <!-- Archive/Restore Button -->
+                                    <button name="toggle_active" type="object"
+                                            t-attf-class="btn btn-sm #{record.active.raw_value ? 'btn-warning' : 'btn-success'}"
+                                            attrs="{'invisible': [('id', '=', False)]}">
+                                        <t t-if="record.active.raw_value">
+                                            <i class="fa fa-archive me-1"/>Archive
+                                        </t>
+                                        <t t-else="">
+                                            <i class="fa fa-undo me-1"/>Restore
+                                        </t>
+                                    </button>
+                                    <!-- View Documents Button -->
+                                    <button name="action_view_documents" type="object"
+                                            class="btn btn-outline-primary btn-sm">
+                                        <i class="fa fa-folder-open me-1"/>View Documents
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+</odoo>

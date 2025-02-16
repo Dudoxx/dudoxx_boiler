@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_dudoxx_boiler_client_document_tree" model="ir.ui.view">
+        <field name="name">dudoxx_boiler.client_document.tree</field>
+        <field name="model">dudoxx_boiler.client_document</field>
+        <field name="arch" type="xml">
+            <tree string="Documents">
+                <field name="name"/>
+                <field name="document_type"/>
+                <field name="date"/>
+                <field name="file_name"/>
+                <field name="client_ids" widget="many2many_tags"/>
+                <field name="active" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

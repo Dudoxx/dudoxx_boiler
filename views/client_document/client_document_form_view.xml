@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_dudoxx_boiler_client_document_form" model="ir.ui.view">
+        <field name="name">dudoxx_boiler.client_document.form</field>
+        <field name="model">dudoxx_boiler.client_document</field>
+        <field name="arch" type="xml">
+            <form string="Document">
+                <header>
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <div class="btn-group" role="group">
+                            <!-- Draft -> Submit -->
+                            <button name="action_submit" type="object" string="Submit"
+                                    class="btn btn-primary"
+                                    attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+
+                            <!-- Submitted -> Approve/Reject -->
+                            <button name="action_approve" type="object" string="Approve"
+                                    class="btn btn-success"
+                                    attrs="{'invisible': [('state', '!=', 'submitted')]}"/>
+                            <button name="action_reject" type="object" string="Reject"
+                                    class="btn btn-danger"
+                                    attrs="{'invisible': [('state', '!=', 'submitted')]}"/>
+
+                            <!-- Submitted/Rejected -> Reset to Draft -->
+                            <button name="action_reset_to_draft" type="object" string="Reset to Draft"
+                                    class="btn btn-secondary"
+                                    attrs="{'invisible': [('state', 'not in', ['submitted', 'rejected'])]}"/>
+
+                            <!-- Approved -> Expire -->
+                            <button name="action_expire" type="object" string="Mark as Expired"
+                                    class="btn btn-warning"
+                                    attrs="{'invisible': [('state', '!=', 'approved')]}"/>
+
+                            <!-- Expired -> Reactivate -->
+                            <button name="action_reactivate" type="object" string="Reactivate"
+                                    class="btn btn-info"
+                                    attrs="{'invisible': [('state', '!=', 'expired')]}"/>
+                        </div>
+                    </div>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,submitted,approved,rejected,expired"/>
+                </header>
+                <sheet>
+                    <!-- Title -->
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reference" readonly="1" class="mb-2"/>
+                        </h1>
+                        <h2>
+                            <field name="name" placeholder="Document Name" class="mb-0"/>
+                        </h2>
+                    </div>
+
+                    <!-- Content Cards -->
+                    <div class="row mt-4">
+                        <!-- Left Column -->
+                        <div class="col-md-6">
+                            <!-- Basic Info Card -->
+                            <div class="card mb-3 card-border">
+                                <button name="action_toggle_section" type="object"
+                                        class="card-header bg-light d-flex justify-content-between align-items-center w-100 border-0 cursor-pointer"
+                                        context="{'section': 'basic_info'}">
+                                    <h5 class="mb-0">Basic Information</h5>
+                                    <i class="fa fa-chevron-down" title="Toggle Section"/>
+                                </button>
+                                <div class="card-body" attrs="{'invisible': [('show_basic_info', '=', False)]}">
+                                    <field name="show_basic_info" invisible="1"/>
+                                    <group>
+                                        <field name="document_type" class="mb-2"/>
+                                        <field name="category" class="mb-2"/>
+                                        <field name="priority" widget="priority" class="mb-2"/>
+                                        <field name="access_level" class="mb-2"/>
+                                        <field name="is_confidential" class="mb-2"/>
+                                    </group>
+                                </div>
+                            </div>
+
+                            <!-- File Info Card -->
+                            <div class="card mb-3 card-border">
+                                <button name="action_toggle_section" type="object"
+                                        class="card-header bg-light d-flex justify-content-between align-items-center w-100 border-0 cursor-pointer"
+                                        context="{'section': 'file_info'}">
+                                    <h5 class="mb-0">File Information</h5>
+                                    <i class="fa fa-chevron-down" title="Toggle Section"/>
+                                </button>
+                                <div class="card-body" attrs="{'invisible': [('show_file_info', '=', False)]}">
+                                    <field name="show_file_info" invisible="1"/>
+                                    <div class="text-center mb-3">
+                                        <div class="document-icon-container">
+                                            <field name="icon" widget="image" class="document-icon"/>
+                                        </div>
+                                    </div>
+                                    <group>
+                                        <field name="file" filename="file_name" class="mb-2"/>
+                                        <field name="file_name" invisible="1"/>
+                                        <field name="file_type" readonly="1" class="mb-2"/>
+                                        <field name="file_size" readonly="1" class="mb-2"/>
+                                    </group>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="col-md-6">
+                            <!-- Dates Card -->
+                            <div class="card mb-3 card-border">
+                                <button name="action_toggle_section" type="object"
+                                        class="card-header bg-light d-flex justify-content-between align-items-center w-100 border-0 cursor-pointer"
+                                        context="{'section': 'dates'}">
+                                    <h5 class="mb-0">Dates</h5>
+                                    <i class="fa fa-chevron-down" title="Toggle Section"/>
+                                </button>
+                                <div class="card-body" attrs="{'invisible': [('show_dates', '=', False)]}">
+                                    <field name="show_dates" invisible="1"/>
+                                    <group>
+                                        <field name="date" class="mb-2"/>
+                                        <field name="expiry_date" class="mb-2"/>
+                                        <field name="days_to_expire" readonly="1" class="mb-2"/>
+                                        <field name="creation_datetime" readonly="1" class="mb-2"/>
+                                    </group>
+                                </div>
+                            </div>
+
+                            <!-- Version Card -->
+                            <div class="card mb-3 card-border">
+                                <button name="action_toggle_section" type="object"
+                                        class="card-header bg-light d-flex justify-content-between align-items-center w-100 border-0 cursor-pointer"
+                                        context="{'section': 'version'}">
+                                    <h5 class="mb-0">Version Control</h5>
+                                    <i class="fa fa-chevron-down" title="Toggle Section"/>
+                                </button>
+                                <div class="card-body" attrs="{'invisible': [('show_version', '=', False)]}">
+                                    <field name="show_version" invisible="1"/>
+                                    <group>
+                                        <field name="version" class="mb-2"/>
+                                        <field name="previous_version_id" class="mb-2"/>
+                                    </group>
+                                </div>
+                            </div>
+
+                            <!-- Relations Card -->
+                            <div class="card mb-3 card-border">
+                                <button name="action_toggle_section" type="object"
+                                        class="card-header bg-light d-flex justify-content-between align-items-center w-100 border-0 cursor-pointer"
+                                        context="{'section': 'relations'}">
+                                    <h5 class="mb-0">Relations</h5>
+                                    <i class="fa fa-chevron-down" title="Toggle Section"/>
+                                </button>
+                                <div class="card-body" attrs="{'invisible': [('show_relations', '=', False)]}">
+                                    <field name="show_relations" invisible="1"/>
+                                    <group>
+                                        <field name="client_ids" widget="many2many_tags" class="mb-2"/>
+                                        <field name="department_id" class="mb-2"/>
+                                    </group>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notes Section -->
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="card card-border">
+                                <button name="action_toggle_section" type="object"
+                                        class="card-header bg-light d-flex justify-content-between align-items-center w-100 border-0 cursor-pointer"
+                                        context="{'section': 'notes'}">
+                                    <h5 class="mb-0">Additional Information</h5>
+                                    <i class="fa fa-chevron-down" title="Toggle Section"/>
+                                </button>
+                                <div class="card-body" attrs="{'invisible': [('show_notes', '=', False)]}">
+                                    <field name="show_notes" invisible="1"/>
+                                    <group>
+                                        <field name="keywords" class="mb-2"/>
+                                        <field name="summary" class="mb-2"/>
+                                        <field name="notes" class="mb-2"/>
+                                    </group>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hidden Fields -->
+                    <field name="active" invisible="1"/>
+                </sheet>
+
+                <!-- Chatter -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+</odoo>

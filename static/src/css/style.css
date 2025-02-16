@@ -1,0 +1,157 @@
+/* Card Border Styles */
+.card-border {
+    border-left: 4px solid #ffc107 !important;
+    transition: all 0.3s ease;
+}
+
+.card-border[data-state="completed"],
+.card-border[data-state="approved"] {
+    border-left-color: #28a745 !important;
+}
+
+.card-border[data-state="rejected"],
+.card-border[data-state="expired"] {
+    border-left-color: #dc3545 !important;
+}
+
+/* Kanban Card Styles */
+.o_kanban_mobile .card {
+    transition: all 0.3s ease;
+}
+
+.o_kanban_mobile .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+}
+
+/* Input Field Width */
+.o_form_view .o_form_label {
+    margin-bottom: 0.3rem;
+}
+
+.o_form_view .o_field_widget {
+    width: 97% !important;
+    margin-bottom: 0.5rem;
+}
+
+/* Button Styles */
+.btn-link {
+    text-decoration: none;
+}
+
+.btn-link:hover {
+    text-decoration: none;
+    opacity: 0.8;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.cursor-pointer:hover {
+    background-color: #f8f9fa;
+}
+
+/* Status Colors */
+.bg-success { background-color: #28a745 !important; }
+.bg-warning { background-color: #ffc107 !important; }
+.bg-danger { background-color: #dc3545 !important; }
+.text-success { color: #28a745 !important; }
+.text-info { color: #17a2b8 !important; }
+.text-primary { color: #007bff !important; }
+.text-muted { color: #6c757d !important; }
+
+/* Card Header Icons */
+.card-header .fa {
+    transition: transform 0.3s ease;
+}
+
+.card-header .fa.fa-chevron-up {
+    transform: rotate(180deg);
+}
+
+/* Status Badge Styles */
+.badge {
+    font-weight: 500;
+    padding: 0.4rem 0.8rem;
+}
+
+/* Form Section Margins */
+.form-section {
+    margin-bottom: 1.5rem;
+}
+
+/* Document Type Icons */
+.document-icon-container {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #e9ecef;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.document-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 8px;
+}
+
+/* Client Avatar */
+.client-avatar-container {
+    width: 128px;
+    height: 128px;
+    margin: 0 auto;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #e9ecef;
+}
+
+.client-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Form Header */
+.o_form_view .o_form_sheet {
+    margin-top: 0;
+}
+
+.o_form_view > header {
+    background-color: #f8f9fa !important;
+    border-bottom: 1px solid #dee2e6 !important;
+}
+
+/* Kanban Status Indicators */
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+/* Priority Stars */
+.priority-star {
+    color: #ffc107;
+    margin-right: 0.2rem;
+}
+
+/* Document Count Badge */
+.document-count {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* Form Group Spacing */
+.form-group:not(:last-child) {
+    margin-bottom: 1rem;
+}

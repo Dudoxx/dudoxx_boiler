@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Client Categories/Tags -->
+    <record id="client_tag_vip" model="res.partner.category">
+        <field name="name">VIP</field>
+        <field name="color" eval="1"/>
+    </record>
+
+    <record id="client_tag_premium" model="res.partner.category">
+        <field name="name">Premium</field>
+        <field name="color" eval="2"/>
+    </record>
+
+    <!-- Sample Clients -->
+    <!-- Sample Clients with Images -->
+    <record id="demo_client_1" model="dudoxx_boiler.client">
+        <field name="name">John Smith</field>
+        <field name="image" type="base64" file="dudoxx_boiler/static/src/assets/client_avatar_1.png"/>
+        <field name="email">john.smith@example.com</field>
+        <field name="phone">+1 234 567 890</field>
+        <field name="mobile">+1 234 567 891</field>
+        <field name="website">www.johnsmith.com</field>
+        <field name="street">123 Main Street</field>
+        <field name="city">New York</field>
+        <field name="state">NY</field>
+        <field name="zip">10001</field>
+        <field name="birthdate">1985-06-15</field>
+        <field name="gender">male</field>
+        <field name="company_name">Smith Enterprises</field>
+        <field name="job_position">CEO</field>
+        <field name="industry">tech</field>
+        <field name="client_type">company</field>
+        <field name="status">active</field>
+        <field name="priority">2</field>
+        <field name="tag_ids" eval="[(6, 0, [ref('client_tag_vip')])]"/>
+        <field name="notes">&lt;p&gt;VIP client with multiple tech ventures&lt;/p&gt;</field>
+    </record>
+
+    <record id="demo_client_2" model="dudoxx_boiler.client">
+        <field name="name">Sarah Johnson</field>
+        <field name="image" type="base64" file="dudoxx_boiler/static/src/assets/client_avatar_3.png"/>
+        <field name="email">sarah.j@example.com</field>
+        <field name="phone">+1 234 567 892</field>
+        <field name="street">456 Oak Avenue</field>
+        <field name="city">Los Angeles</field>
+        <field name="state">CA</field>
+        <field name="zip">90001</field>
+        <field name="birthdate">1990-03-20</field>
+        <field name="gender">female</field>
+        <field name="job_position">Doctor</field>
+        <field name="industry">healthcare</field>
+        <field name="client_type">individual</field>
+        <field name="status">active</field>
+        <field name="priority">1</field>
+        <field name="tag_ids" eval="[(6, 0, [ref('client_tag_premium')])]"/>
+        <field name="notes">&lt;p&gt;Healthcare professional with regular documentation needs&lt;/p&gt;</field>
+    </record>
+
+    <!-- Sample Documents -->
+    <!-- Sample Documents with Icons -->
+    <record id="demo_document_1" model="dudoxx_boiler.client_document">
+        <field name="name">Business Contract 2025</field>
+        <field name="icon" type="base64" file="dudoxx_boiler/static/src/assets/client_icon.png"/>
+        <field name="icon_name">contract.png</field>
+        <field name="document_type">contract</field>
+        <field name="category">business</field>
+        <field name="date">2025-01-01</field>
+        <field name="expiry_date">2026-01-01</field>
+        <field name="state">approved</field>
+        <field name="priority">2</field>
+        <field name="access_level">confidential</field>
+        <field name="version">1.0</field>
+        <field name="client_ids" eval="[(6, 0, [ref('demo_client_1')])]"/>
+        <field name="keywords">contract, business, 2025</field>
+        <field name="summary">Annual business contract for tech services</field>
+        <field name="notes">&lt;p&gt;Comprehensive business contract covering all tech services for 2025&lt;/p&gt;</field>
+    </record>
+
+    <record id="demo_document_2" model="dudoxx_boiler.client_document">
+        <field name="name">Medical Certificate</field>
+        <field name="icon" type="base64" file="dudoxx_boiler/static/src/assets/client_icon.png"/>
+        <field name="icon_name">certificate.png</field>
+        <field name="document_type">certificate</field>
+        <field name="category">medical</field>
+        <field name="date">2025-02-01</field>
+        <field name="state">approved</field>
+        <field name="priority">1</field>
+        <field name="access_level">confidential</field>
+        <field name="version">1.0</field>
+        <field name="client_ids" eval="[(6, 0, [ref('demo_client_2')])]"/>
+        <field name="keywords">medical, certificate</field>
+        <field name="summary">Medical certification for professional practice</field>
+        <field name="notes">&lt;p&gt;Official medical certification document&lt;/p&gt;</field>
+    </record>
+
+    <record id="demo_document_3" model="dudoxx_boiler.client_document">
+        <field name="name">Technical Proposal</field>
+        <field name="icon" type="base64" file="dudoxx_boiler/static/src/assets/client_icon.png"/>
+        <field name="icon_name">proposal.png</field>
+        <field name="document_type">report</field>
+        <field name="category">business</field>
+        <field name="date">2025-02-15</field>
+        <field name="state">draft</field>
+        <field name="priority">2</field>
+        <field name="access_level">internal</field>
+        <field name="version">1.0</field>
+        <field name="client_ids" eval="[(6, 0, [ref('demo_client_1')])]"/>
+        <field name="keywords">proposal, technical, draft</field>
+        <field name="summary">Technical proposal for new software project</field>
+        <field name="notes">&lt;p&gt;Detailed technical proposal including project scope and timeline&lt;/p&gt;</field>
+    </record>
+</odoo>

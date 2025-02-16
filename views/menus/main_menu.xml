@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="menu_dudoxx_boiler_root"
+              name="Dudoxx Boiler"
+              web_icon="dudoxx_boiler,static/description/icon.png"
+              sequence="10"/>
+
+    <!-- Clients Section -->
+    <menuitem id="menu_dudoxx_boiler_clients_root"
+              name="Clients"
+              parent="menu_dudoxx_boiler_root"
+              sequence="10"/>
+
+        <!-- Client Management -->
+        <menuitem id="menu_dudoxx_boiler_client_list"
+                  name="Clients"
+                  parent="menu_dudoxx_boiler_clients_root"
+                  action="dudoxx_boiler.action_dudoxx_boiler_client"
+                  sequence="10"/>
+
+        <!-- Client Categories -->
+        <menuitem id="menu_dudoxx_boiler_client_categories"
+                  name="Client Categories"
+                  parent="menu_dudoxx_boiler_clients_root"
+                  action="base.action_partner_category_form"
+                  sequence="20"/>
+
+    <!-- Documents Section -->
+    <menuitem id="menu_dudoxx_boiler_documents_root"
+              name="Documents"
+              parent="menu_dudoxx_boiler_root"
+              sequence="20"/>
+
+        <!-- Document Management -->
+        <menuitem id="menu_dudoxx_boiler_document_list"
+                  name="Documents"
+                  parent="menu_dudoxx_boiler_documents_root"
+                  action="dudoxx_boiler.action_dudoxx_boiler_client_document"
+                  sequence="10"/>
+
+    <!-- Configuration -->
+    <menuitem id="menu_dudoxx_boiler_config"
+              name="Configuration"
+              parent="menu_dudoxx_boiler_root"
+              groups="base.group_system"
+              sequence="100"/>
+
+
+        <!-- Tags Configuration -->
+        <menuitem id="menu_dudoxx_boiler_tags_config"
+                  name="Tags"
+                  parent="menu_dudoxx_boiler_config"
+                  action="base.action_partner_category_form"
+                  sequence="20"/>
+</odoo>
