@@ -1,7 +1,46 @@
+# -*- coding: utf-8 -*-
+###############################################################################
+#
+#    Dudoxx, Odoo Implementation
+#    Copyright (C) 2024-TODAY Dudoxx (<https://www.dudoxx.com>)
+#    Author: Walid Boudabbous
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Lesser General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Lesser General Public License for more details.
+#
+#    You should have received a copy of the GNU Lesser General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+###############################################################################
+
 from odoo import models, fields, api
 from datetime import datetime
 
 class ClientDocumentFields(models.Model):
+    """Client Document model implementing comprehensive document management.
+
+    This model provides a complete document management system with support for:
+    - File upload and storage
+    - Document categorization and typing
+    - Version control
+    - Security and access control
+    - Expiry tracking
+    - Client associations
+
+    Technical Details:
+    - Inherits mail.thread for message history
+    - Inherits mail.activity.mixin for activity management
+    - Uses automatic sequences for references
+    - Implements computed fields for file type, size, and expiry
+    - Enforces unique constraints on document references
+    """
     _name = 'dudoxx_boiler.client_document'
     _description = 'Client Document'
     _inherit = ['mail.thread', 'mail.activity.mixin']
@@ -18,7 +57,22 @@ class ClientDocumentFields(models.Model):
     show_notes = fields.Boolean(string="Show Notes", default=True)
 
     def action_toggle_section(self):
-        """Toggle visibility of a section."""
+        """Toggle visibility of a form section.
+
+        This method handles the collapsible sections in the form view.
+        It toggles the visibility state of the specified section based
+        on the context.
+
+        Returns:
+            bool: Always returns True
+
+        Context Keys:
+            section (str): The section identifier to toggle (e.g., 'basic_info')
+
+        Example:
+            >>> # Toggle basic info section
+            >>> record.with_context(section='basic_info').action_toggle_section()
+        """
         self.ensure_one()
         section = self.env.context.get('section')
         if section:
@@ -210,6 +264,24 @@ class ClientDocumentFields(models.Model):
     # Computed Fields
     @api.depends('file_name')
     def _compute_file_type(self):
+        """Compute document file type based on file extension.
+
+        This method analyzes the file name extension to determine
+        the appropriate file type category. Supports common formats:
+        - PDF documents
+        - Word documents (doc, docx)
+        - Excel sheets (xls, xlsx)
+        - Images (jpg, jpeg, png, gif)
+        - Other (any other extension)
+
+        Dependencies:
+            - file_name field
+
+        Example:
+            >>> doc.file_name = 'report.pdf'
+            >>> doc._compute_file_type()
+            >>> doc.file_type  # 'pdf'
+        """
         for record in self:
             if record.file_name:
                 extension = record.file_name.split('.')[-1].lower() if '.' in record.file_name else ''
@@ -228,6 +300,20 @@ class ClientDocumentFields(models.Model):
 
     @api.depends('file')
     def _compute_file_size(self):
+        """Compute file size in megabytes.
+
+        This method calculates the size of the uploaded file
+        in megabytes for display purposes. The calculation is
+        approximate and uses binary conversion (1024 bytes = 1 KB).
+
+        Dependencies:
+            - file field (binary)
+
+        Example:
+            >>> # File of 2.5 MB
+            >>> doc._compute_file_size()
+            >>> doc.file_size  # 2.5
+        """
         for record in self:
             if record.file:
                 # Convert to MB (approximate calculation)
@@ -237,6 +323,22 @@ class ClientDocumentFields(models.Model):
 
     @api.depends('expiry_date')
     def _compute_days_to_expire(self):
+        """Compute number of days until document expiry.
+
+        This method calculates the number of days remaining until
+        the document expires. Useful for:
+        - Expiry notifications
+        - Document validity checks
+        - Renewal planning
+
+        Dependencies:
+            - expiry_date field
+
+        Example:
+            >>> # Document expires in 30 days
+            >>> doc._compute_days_to_expire()
+            >>> doc.days_to_expire  # 30
+        """
         today = fields.Date.today()
         for record in self:
             if record.expiry_date:
@@ -248,6 +350,24 @@ class ClientDocumentFields(models.Model):
     # Sequence Generation
     @api.model_create_multi
     def create(self, vals_list):
+        """Create new document records with automatic reference generation.
+
+        This method ensures each document gets a unique reference number
+        using Odoo's sequence mechanism.
+
+        Args:
+            vals_list (list): List of value dictionaries for creation
+
+        Returns:
+            recordset: Newly created document records
+
+        Example:
+            >>> self.env['dudoxx_boiler.client_document'].create({
+            ...     'name': 'Contract 2024',
+            ...     'document_type': 'contract'
+            ... })
+            dudoxx_boiler.client_document(1,)
+        """
         for vals in vals_list:
             if vals.get('reference', 'New') == 'New':
                 vals['reference'] = self.env['ir.sequence'].next_by_code('dudoxx_boiler.client_document') or 'New'

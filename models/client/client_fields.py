@@ -1,7 +1,45 @@
+# -*- coding: utf-8 -*-
+###############################################################################
+#
+#    Dudoxx, Odoo Implementation
+#    Copyright (C) 2024-TODAY Dudoxx (<https://www.dudoxx.com>)
+#    Author: Walid Boudabbous
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Lesser General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Lesser General Public License for more details.
+#
+#    You should have received a copy of the GNU Lesser General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+###############################################################################
+
 from odoo import models, fields, api
 from datetime import date
 
 class ClientFields(models.Model):
+    """Client model implementing comprehensive client management.
+
+    This model provides a complete client management system with support for:
+    - Personal and business information
+    - Contact details and addresses
+    - Financial tracking
+    - Document management
+    - Section visibility control
+
+    Technical Details:
+    - Inherits mail.thread for message history
+    - Inherits mail.activity.mixin for activity management
+    - Uses automatic sequences for references
+    - Implements computed fields for age and document count
+    - Enforces unique constraints on email and reference
+    """
     _name = 'dudoxx_boiler.client'
     _description = 'Dudoxx Client'
     _inherit = ['mail.thread', 'mail.activity.mixin']
@@ -17,7 +55,22 @@ class ClientFields(models.Model):
     show_documents = fields.Boolean(string="Show Documents", default=True)
 
     def action_toggle_section(self):
-        """Toggle visibility of a section."""
+        """Toggle visibility of a form section.
+
+        This method handles the collapsible sections in the form view.
+        It toggles the visibility state of the specified section based
+        on the context.
+
+        Returns:
+            bool: Always returns True
+
+        Context Keys:
+            section (str): The section identifier to toggle (e.g., 'basic_info')
+
+        Example:
+            >>> # Toggle basic info section
+            >>> record.with_context(section='basic_info').action_toggle_section()
+        """
         self.ensure_one()
         section = self.env.context.get('section')
         if section:
@@ -217,6 +270,18 @@ class ClientFields(models.Model):
     # Computed Fields
     @api.depends('birthdate')
     def _compute_age(self):
+        """Compute client age based on birthdate.
+
+        This method calculates the exact age considering:
+        - Year difference
+        - Month and day for accuracy
+        - Handles leap years correctly
+
+        The age is stored for performance in searches and reports.
+
+        Dependencies:
+            - birthdate field
+        """
         for record in self:
             if record.birthdate:
                 today = date.today()
@@ -227,6 +292,14 @@ class ClientFields(models.Model):
 
     @api.depends('document_ids')
     def _compute_document_count(self):
+        """Compute total number of documents linked to the client.
+
+        This method maintains an accurate count of associated documents
+        for quick access in views and reports.
+
+        Dependencies:
+            - document_ids field (many2many)
+        """
         for record in self:
             record.document_count = len(record.document_ids)
 
@@ -239,6 +312,24 @@ class ClientFields(models.Model):
     # Sequence Generation
     @api.model_create_multi
     def create(self, vals_list):
+        """Create new client records with automatic reference generation.
+
+        This method ensures each client gets a unique reference number
+        using Odoo's sequence mechanism.
+
+        Args:
+            vals_list (list): List of value dictionaries for creation
+
+        Returns:
+            recordset: Newly created client records
+
+        Example:
+            >>> self.env['dudoxx_boiler.client'].create({
+            ...     'name': 'John Doe',
+            ...     'email': 'john@example.com'
+            ... })
+            dudoxx_boiler.client(1,)
+        """
         for vals in vals_list:
             if vals.get('reference', 'New') == 'New':
                 vals['reference'] = self.env['ir.sequence'].next_by_code('dudoxx_boiler.client') or 'New'
