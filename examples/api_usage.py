@@ -24,6 +24,7 @@ import requests
 import json
 import os
 from pathlib import Path
+from datetime import datetime
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -44,10 +45,6 @@ class DudoxxAPI:
         self.base_url = base_url.rstrip('/')
         self.session = requests.Session()
 
-        # Get session info first
-        session_info = self.session.get(f"{self.base_url}/web/session/get_session_info")
-        session_info.raise_for_status()
-
         # Authenticate
         auth_url = f"{self.base_url}/web/session/authenticate"
         auth_data = {
@@ -60,17 +57,29 @@ class DudoxxAPI:
             }
         }
 
-        # Add CSRF token if available
-        csrf_token = session_info.cookies.get('csrf_token')
-        if csrf_token:
-            self.session.headers.update({'X-CSRFToken': csrf_token})
-
         response = self.session.post(auth_url, json=auth_data)
         response.raise_for_status()
 
         result = response.json()
         if not result.get('result'):
             raise Exception("Authentication failed")
+
+        # Get session info after authentication using JSON-RPC
+        session_info_url = f"{self.base_url}/web/session/get_session_info"
+        session_info_data = {
+            "jsonrpc": "2.0",
+            "method": "call",
+            "params": {}
+        }
+        session_info = self.session.post(session_info_url, json=session_info_data)
+        session_info.raise_for_status()
+
+        # Set CSRF token if available in session info response
+        session_result = session_info.json().get('result', {})
+        if session_result:
+            csrf_token = session_result.get('csrf_token')
+            if csrf_token:
+                self.session.headers.update({'X-CSRFToken': csrf_token})
 
     def _make_request(self, method, endpoint, **kwargs):
         """Make HTTP request to API endpoint.
@@ -91,8 +100,8 @@ class DudoxxAPI:
             'Content-Type': 'application/json'
         }
 
-        # Add CSRF token from cookies if available
-        csrf_token = self.session.cookies.get('csrf_token')
+        # Add CSRF token from session if available
+        csrf_token = self.session.headers.get('X-CSRFToken')
         if csrf_token:
             headers['X-CSRFToken'] = csrf_token
 
@@ -211,10 +220,11 @@ def main():
     )
 
     try:
-        # Create a new client
+        # Create a new client with unique email
+        timestamp = int(datetime.now().timestamp())
         client_data = {
             "name": "John Doe",
-            "email": "john@example.com",
+            "email": f"john.doe.{timestamp}@example.com",
             "phone": "+1234567890",
             "client_type": "individual"
         }
@@ -230,7 +240,7 @@ def main():
             name="Contract 2024",
             document_type="contract",
             category="legal",
-            file_path="path/to/contract.pdf",
+            file_path="Patient_Report_Kardiologie Test.pdf",
             client_ids=[client['id']]
         )
         print("\nCreated document:", document)
