@@ -1,0 +1,78 @@
+# Core Dependencies
+psutil
+graphql-core
+werkzeug
+
+# Audio Processing
+mutagen
+wave
+ffmpeg-python
+assemblyai
+deepgram-sdk
+
+# API Clients
+twilio
+openai
+litellm
+
+# Document Processing
+pytesseract
+pdf2image
+python-magic
+python-docx
+reportlab
+PyMuPDF
+Pillow
+python-pptx
+PyPDF2
+markdown
+beautifulsoup4
+pdfkit
+
+# Web & Networking
+websockets
+playwright
+requests
+aiohttp
+yarl
+
+# Database & Storage
+lancedb
+chromadb
+
+# Security & Authentication
+cryptography
+PyJWT
+
+# AI and LLM
+tiktoken
+langchain-community
+langchain-core
+langchain-openai
+
+# Data Processing
+numpy
+pandas
+tabulate
+
+# Testing & Development
+pytest
+pytest-asyncio
+pytest-cov
+black
+isort
+mypy
+flake8
+pre-commit
+
+# Utilities
+python-dotenv
+faker
+names
+bs4
+
+
+# Agentic framwork
+agno
+phidata
+
