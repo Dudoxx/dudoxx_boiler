@@ -20,5 +20,5 @@
 #
 ###############################################################################
 
-from . import models
-from . import controllers
+from . import client_api
+from . import client_document_api

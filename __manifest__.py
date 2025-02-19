@@ -14,7 +14,7 @@
         - Security implementation
         - Best practices in code organization
     ''',
-    'depends': ['base', 'mail', 'hr'],
+    'depends': ['base', 'mail', 'hr', 'web'],
     'assets': {
         'web.assets_backend': [
             'dudoxx_boiler/static/src/css/style.css',
@@ -23,6 +23,7 @@
     'data': [
         # Security
         'security/ir.model.access.csv',
+        'security/api_security.xml',
 
         # Data
         'data/sequences.xml',
