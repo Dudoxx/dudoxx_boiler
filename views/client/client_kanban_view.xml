@@ -32,27 +32,28 @@
                             </div>
 
                             <!-- Card Header -->
-                            <div class="card-header bg-white border-bottom pt-3">
-                                <div class="d-flex align-items-center">
-                                    <!-- Client Image -->
-                                    <div class="me-3">
-                                        <field name="image" widget="image" class="client-avatar"/>
-                                    </div>
-                                    <!-- Client Info -->
+                            <div class="card-header bg-white border-bottom pt-3 pb-3">
+                                <!-- Client Name and Priority Row -->
+                                <div class="d-flex justify-content-between align-items-start mb-3">
                                     <div class="flex-grow-1">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <h5 class="card-title mb-1 text-primary fw-bold">
-                                                <field name="name"/>
-                                            </h5>
-                                            <field name="priority" widget="priority"/>
-                                        </div>
+                                        <h5 class="card-title mb-1 text-primary fw-bold">
+                                            <field name="name"/>
+                                        </h5>
                                         <p class="text-muted small mb-0">
                                             <field name="reference"/>
                                         </p>
-                                        <div class="mt-1">
-                                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                                        </div>
                                     </div>
+                                    <field name="priority" widget="priority"/>
+                                </div>
+
+                                <!-- Client Image (Centered) -->
+                                <div class="text-center mb-2">
+                                    <field name="image" widget="image" class="client-avatar rounded-circle" style="width: 120px; height: 120px; object-fit: cover;"/>
+                                </div>
+
+                                <!-- Tags -->
+                                <div class="text-center">
+                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                 </div>
                             </div>
 
