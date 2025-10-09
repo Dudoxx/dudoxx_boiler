@@ -21,7 +21,7 @@
                 <field name="active"/>
 
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="card">
                         <div class="oe_kanban_global_click card m-3 border shadow-sm position-relative card-border"
                              t-att-data-state="record.status.raw_value">
                             <!-- Status Badge -->
@@ -95,7 +95,7 @@
                                     <!-- Archive/Restore Button -->
                                     <button name="toggle_active" type="object"
                                             t-attf-class="btn btn-sm #{record.active.raw_value ? 'btn-warning' : 'btn-success'}"
-                                            attrs="{'invisible': [('id', '=', False)]}">
+                        invisible="id == False">
                                         <t t-if="record.active.raw_value">
                                             <i class="fa fa-archive me-1"/>Archive
                                         </t>

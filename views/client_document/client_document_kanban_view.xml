@@ -25,7 +25,7 @@
                 <field name="active"/>
 
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="card">
                         <div class="oe_kanban_global_click card m-3 border shadow-sm position-relative card-border"
                              t-att-data-state="record.state.raw_value">
                             <!-- Status Badge -->
@@ -106,40 +106,40 @@
                                     <!-- Draft -> Submit -->
                                     <button name="action_submit" type="object"
                                             class="btn btn-primary btn-sm"
-                                            attrs="{'invisible': [('state', '!=', 'draft')]}">
+                        invisible="state != 'draft'">
                                         <i class="fa fa-paper-plane me-1"/>Submit
                                     </button>
 
                                     <!-- Submitted -> Approve/Reject -->
                                     <button name="action_approve" type="object"
                                             class="btn btn-success btn-sm"
-                                            attrs="{'invisible': [('state', '!=', 'submitted')]}">
+                        invisible="state != 'submitted'">
                                         <i class="fa fa-check me-1"/>Approve
                                     </button>
                                     <button name="action_reject" type="object"
                                             class="btn btn-danger btn-sm"
-                                            attrs="{'invisible': [('state', '!=', 'submitted')]}">
+                        invisible="state != 'submitted'">
                                         <i class="fa fa-times me-1"/>Reject
                                     </button>
 
                                     <!-- Submitted/Rejected -> Reset -->
                                     <button name="action_reset_to_draft" type="object"
                                             class="btn btn-secondary btn-sm"
-                                            attrs="{'invisible': [('state', 'not in', ['submitted', 'rejected'])]}">
+                                            invisible="state not in ('submitted', 'rejected')">
                                         <i class="fa fa-refresh me-1"/>Reset
                                     </button>
 
                                     <!-- Approved -> Expire -->
                                     <button name="action_expire" type="object"
                                             class="btn btn-warning btn-sm"
-                                            attrs="{'invisible': [('state', '!=', 'approved')]}">
+                        invisible="state != 'approved'">
                                         <i class="fa fa-clock-o me-1"/>Expire
                                     </button>
 
                                     <!-- Expired -> Reactivate -->
                                     <button name="action_reactivate" type="object"
                                             class="btn btn-info btn-sm"
-                                            attrs="{'invisible': [('state', '!=', 'expired')]}">
+                        invisible="state != 'expired'">
                                         <i class="fa fa-history me-1"/>Reactivate
                                     </button>
                                 </div>
@@ -149,7 +149,7 @@
                                     <!-- Archive/Restore Button -->
                                     <button name="toggle_active" type="object"
                                             t-attf-class="btn btn-sm #{record.active.raw_value ? 'btn-warning' : 'btn-success'}"
-                                            attrs="{'invisible': [('id', '=', False)]}">
+                        invisible="id == False">
                                         <t t-if="record.active.raw_value">
                                             <i class="fa fa-archive me-1"/>Archive
                                         </t>
@@ -160,7 +160,7 @@
                                     <!-- Download Button -->
                                     <button name="action_download" type="object"
                                             class="btn btn-outline-primary btn-sm"
-                                            attrs="{'invisible': [('file', '=', False)]}">
+                        invisible="file == False">
                                         <i class="fa fa-download me-1"/>Download
                                     </button>
                                 </div>
