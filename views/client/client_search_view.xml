@@ -54,7 +54,7 @@
                         domain="[('active', '=', False)]"/>
 
                 <!-- Group By -->
-                <group expand="0" string="Group By">
+                <group name="group_by">
                     <filter string="Status" name="group_by_status"
                             context="{'group_by': 'status'}"/>
                     <filter string="Type" name="group_by_type"
