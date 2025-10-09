@@ -43,7 +43,7 @@ class ClientServices(models.Model):
             'name': 'Client Documents',
             'type': 'ir.actions.act_window',
             'res_model': 'dudoxx_boiler.client_document',
-            'view_mode': 'kanban,tree,form',
+            'view_mode': 'kanban,list,form',
             'domain': [('id', 'in', self.document_ids.ids)],
             'context': {
                 'default_client_ids': [(6, 0, [self.id])],
