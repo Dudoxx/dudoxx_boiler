@@ -1,6 +1,6 @@
 {
     'name': 'Dudoxx Boiler',
-    'version': '16.0.0.1',
+    'version': '19.0.1.0',
     'author': 'Walid Boudabbous',
     'website': 'https://www.dudoxx.com',
     'license': 'LGPL-3',
