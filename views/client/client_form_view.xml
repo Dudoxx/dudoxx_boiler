@@ -10,10 +10,10 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group" role="group">
                             <button name="toggle_active" type="object"
-                                    string="Archive" attrs="{'invisible': [('active', '=', False)]}"
+                                    string="Archive" invisible="active == False"
                                     class="btn btn-primary"/>
                             <button name="toggle_active" type="object"
-                                    string="Unarchive" attrs="{'invisible': [('active', '=', True)]}"
+                                    string="Unarchive" invisible="active == True"
                                     class="btn btn-primary"/>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                                     <h5 class="mb-0">Basic Information</h5>
                                     <i class="fa fa-chevron-down" title="Toggle Section"/>
                                 </button>
-                                <div class="card-body" attrs="{'invisible': [('show_basic_info', '=', False)]}">
+                                <div class="card-body" invisible="show_basic_info == False">
                                     <field name="show_basic_info" invisible="1"/>
                                     <group>
                                         <field name="client_type" class="mb-2"/>
@@ -68,7 +68,7 @@
                                     <h5 class="mb-0">Contact Information</h5>
                                     <i class="fa fa-chevron-down" title="Toggle Section"/>
                                 </button>
-                                <div class="card-body" attrs="{'invisible': [('show_contact_info', '=', False)]}">
+                                <div class="card-body" invisible="show_contact_info == False">
                                     <field name="show_contact_info" invisible="1"/>
                                     <group>
                                         <field name="email" class="mb-2"/>
@@ -88,7 +88,7 @@
                                     <h5 class="mb-0">Address</h5>
                                     <i class="fa fa-chevron-down" title="Toggle Section"/>
                                 </button>
-                                <div class="card-body" attrs="{'invisible': [('show_address', '=', False)]}">
+                                <div class="card-body" invisible="show_address == False">
                                     <field name="show_address" invisible="1"/>
                                     <group>
                                         <field name="street" class="mb-2"/>
@@ -112,7 +112,7 @@
                                     <h5 class="mb-0">Personal Information</h5>
                                     <i class="fa fa-chevron-down" title="Toggle Section"/>
                                 </button>
-                                <div class="card-body" attrs="{'invisible': [('show_personal_info', '=', False)]}">
+                                <div class="card-body" invisible="show_personal_info == False">
                                     <field name="show_personal_info" invisible="1"/>
                                     <div class="text-center mb-3">
                                         <div class="client-avatar-container">
@@ -135,7 +135,7 @@
                                     <h5 class="mb-0">Business Information</h5>
                                     <i class="fa fa-chevron-down" title="Toggle Section"/>
                                 </button>
-                                <div class="card-body" attrs="{'invisible': [('show_business_info', '=', False)]}">
+                                <div class="card-body" invisible="show_business_info == False">
                                     <field name="show_business_info" invisible="1"/>
                                     <group>
                                         <field name="company_name" class="mb-2"/>
@@ -153,7 +153,7 @@
                                     <h5 class="mb-0">Financial Information</h5>
                                     <i class="fa fa-chevron-down" title="Toggle Section"/>
                                 </button>
-                                <div class="card-body" attrs="{'invisible': [('show_financial_info', '=', False)]}">
+                                <div class="card-body" invisible="show_financial_info == False">
                                     <field name="show_financial_info" invisible="1"/>
                                     <group>
                                         <field name="currency_id" invisible="1"/>
@@ -175,10 +175,10 @@
                                     <h5 class="mb-0">Documents</h5>
                                     <i class="fa fa-chevron-down" title="Toggle Section"/>
                                 </button>
-                                <div class="card-body p-0" attrs="{'invisible': [('show_documents', '=', False)]}">
+                                <div class="card-body p-0" invisible="show_documents == False">
                                     <field name="show_documents" invisible="1"/>
                                     <field name="document_ids">
-                                        <tree>
+                                        <list>
                                             <field name="reference"/>
                                             <field name="name"/>
                                             <field name="document_type"/>
@@ -188,7 +188,7 @@
                                                    decoration-info="state == 'draft'"
                                                    decoration-warning="state == 'submitted'"
                                                    decoration-danger="state in ('rejected', 'expired')"/>
-                                        </tree>
+                                        </list>
                                     </field>
                                 </div>
                             </div>

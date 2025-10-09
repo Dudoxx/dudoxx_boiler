@@ -4,7 +4,7 @@
         <field name="name">dudoxx_boiler.client.tree</field>
         <field name="model">dudoxx_boiler.client</field>
         <field name="arch" type="xml">
-            <tree string="Clients"
+            <list string="Clients"
                   decoration-info="status == 'draft'"
                   decoration-success="status == 'active'"
                   decoration-warning="status == 'suspended'"
@@ -30,15 +30,15 @@
                 <button name="toggle_active" type="object"
                         string="Archive" icon="fa-archive"
                         class="btn btn-link text-warning"
-                        attrs="{'invisible': [('active', '=', False)]}"/>
+                        invisible="active == False"/>
                 <button name="toggle_active" type="object"
                         string="Restore" icon="fa-undo"
                         class="btn btn-link text-success"
-                        attrs="{'invisible': [('active', '=', True)]}"/>
+                        invisible="active == True"/>
 
                 <!-- Hidden Fields -->
                 <field name="active" invisible="1"/>
-            </tree>
+            </list>
         </field>
     </record>
 </odoo>
