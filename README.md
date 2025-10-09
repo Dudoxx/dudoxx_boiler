@@ -1,16 +1,17 @@
-# Dudoxx Boiler - Odoo Reference Implementation
+# Dudoxx Boiler - Odoo 19 Reference Implementation
 
-A comprehensive reference implementation demonstrating Odoo features and best practices.
+A comprehensive reference implementation demonstrating Odoo 19 features and best practices.
 
 ## Overview
 
-Dudoxx Boiler serves as a reference implementation for Odoo module development, showcasing:
+Dudoxx Boiler serves as a reference implementation for Odoo 19 module development, showcasing:
 
-- Modern UI/UX patterns
+- Modern UI/UX patterns with Odoo 19 syntax
 - Best practice implementations
 - Complete documentation
 - State management patterns
 - Security implementations
+- Odoo 19 compatible views and controllers
 
 ## Features
 
@@ -45,8 +46,8 @@ Proper implementation of access rights, record rules, and security groups.
 
 ## Requirements
 
-- Odoo 16.0
-- Python 3.8+
+- Odoo 19.0
+- Python 3.10+
 
 ## Quick Start
 
